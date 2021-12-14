@@ -1,0 +1,47 @@
+﻿<Window x:Class="Finestra.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Finestra"
+        mc:Ignorable="d"
+        Title="Export" MinHeight="300" Height="400" MinWidth="260" Width="400" >
+    <Grid Margin="5,5,5,5">
+        <Grid.RowDefinitions >
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition MinWidth="120" MaxWidth="160"/>
+            <ColumnDefinition MinWidth="30" Width="1*"/>
+            <ColumnDefinition MinWidth="80" MaxWidth="160"/>
+            <ColumnDefinition MinWidth="30" Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Column="0" Grid.Row="0" Text="Folder" TextAlignment="Left" VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="File Suffix" TextAlignment="Left" VerticalAlignment="Center"/>
+
+        <TextBlock Grid.Column="2" Grid.ColumnSpan="1" Grid.Row="2" Text="Total collumn:" TextAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="3" Grid.ColumnSpan="1" Grid.Row="2" Text="{Binding Path=TotalCol}" TextAlignment="Left" VerticalAlignment="Center" Name="TotalPage"/>
+        <TextBlock Grid.Column="0" Grid.ColumnSpan="1" Grid.Row="2" Text="Column Index:" TextAlignment="Left" VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="0" Grid.ColumnSpan="1" Grid.Row="3" Text="Table Header:" TextAlignment="Left" VerticalAlignment="Center"/>
+
+        <TextBox Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="0" Text="{Binding Path=FolderLocation}" TextAlignment="Left" VerticalAlignment="Center" Name="Cell" IsEnabled="False"/>
+        <TextBox Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="1" Text="{Binding Path=Suffix}" TextAlignment="Left" VerticalAlignment="Center" Name="From" Validation.Error="OnValidationError"/>
+        <TextBox Grid.Column="1" Grid.ColumnSpan="1" Grid.Row="2" Text="{Binding Path=ColumnIndex, ValidatesOnExceptions=True, NotifyOnValidationError=True}" TextAlignment="Left" VerticalAlignment="Center" Name="StartFrom" Validation.Error="OnValidationError"/>
+        <TextBox Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="3" Text="{Binding Path=TableHeader, ValidatesOnExceptions=True, NotifyOnValidationError=True}" TextAlignment="Left" VerticalAlignment="Center" Name="AssittionalString" Validation.Error="OnValidationError"/>
+
+        <Button Grid.ColumnSpan="4" Grid.Row="4" Name="Esegui" Click="Esegui_Click">Export</Button>
+
+        <DataGrid Grid.Row="5" Grid.ColumnSpan="4" AutoGenerateColumns="False" Margin="0,10,0,0" Name="ListaPagine" IsReadOnly="True" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Items" Binding="{Binding UniqueList}" Width="Auto"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </Grid>
+</Window>

@@ -46,10 +46,12 @@ namespace Ribbon
             ws.Cells[3, 1] = "aa";
             ws.Cells[4, 1] = "bb";
             ws.Cells[5, 1] = "aa";
+            ws.Cells[6, 1] = "Bb";
             ws.Cells[2, 2] = "Apples";
             ws.Cells[3, 2] = "Bananas";
             ws.Cells[4, 2] = "Grapes";
             ws.Cells[5, 2] = "Oranges";
+            ws.Cells[6, 2] = "Raspberry";
 
 
             ws.EnableAutoFilter = true;
@@ -71,13 +73,9 @@ namespace Ribbon
                 range.AutoFilter(Field: col, Criteria1: item, VisibleDropDown: true);
                 Range from = ws.UsedRange;
 
-                Worksheet newWorksheet = xlApp.Worksheets.Add(After: xlApp.ActiveSheet);
-                
 
-
-                from.Copy(newWorksheet.UsedRange);
-
-                //saveInNewExcel(xlApp.Worksheets[newWorksheet.Name], item);
+                //Worksheet newWorksheet = xlApp.Worksheets.Add(After: xlApp.ActiveSheet);
+                //from.Copy(newWorksheet.UsedRange);
 
                 try
                 {
@@ -88,7 +86,9 @@ namespace Ribbon
                     Workbook newbook = app.Workbooks.Add(XlWBATemplate.xlWBATWorksheet);
 
                     Worksheet nws = newbook.Worksheets[1];
-                    from.Copy(nws.UsedRange);
+                    Range dest = nws.Range["A1"];
+                    from.Copy(dest);
+
 
                     //from.Copy(newbook.Worksheets[1]);
 

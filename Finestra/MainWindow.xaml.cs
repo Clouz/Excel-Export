@@ -29,11 +29,14 @@ namespace Finestra
         public MainWindow(Excel_Export.Export data)
         {
             this.data = data;
+            //MessageBox.Show("Col: " + this.data.TotalCol.ToString() + "\nRow:" + this.data.TotalRow.ToString());
+            //MessageBox.Show("Array Length: " + this.data.array.Length.ToString() + "\nIndex: " + this.data.ColumnIndex + "\nHeader: " + this.data.TableHeader);
+            this.data.UpdateUniqueList();
 
             InitializeComponent();
             DataContext = this.data;
 
-            ListaPagine.ItemsSource = this.data.UniqueList;
+            ListaItems.ItemsSource = this.data.UniqueList;
         }
 
         private void Esegui_Click(object sender, RoutedEventArgs e)
@@ -55,6 +58,11 @@ namespace Finestra
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void Index_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            data.UpdateUniqueList();
         }
     }
 }

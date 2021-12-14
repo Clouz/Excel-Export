@@ -15,29 +15,29 @@ namespace Excel_Export
         public string Suffix;
 
 
-        private int _ColumnIndex;
-        public int ColumnIndex
-        {
-            get { return this._ColumnIndex; }
-            set
-            {
-                if (this._ColumnIndex != value && value <= TotalCol && value > 0)
-                    this._ColumnIndex = value;
-            }
-        }
+        //private int _ColumnIndex;
+        public int ColumnIndex { get; set; }
+        //{
+        //    get { return this._ColumnIndex; }
+        //    set
+        //    {
+        //        if (value <= TotalCol && value > 0)
+        //            this._ColumnIndex = value;
+        //    }
+        //}
 
-        private int _TableHeader;
-        public int TableHeader
-        {
-            get { return this._TableHeader; }
-            set
-            {
-                if (this._TableHeader != value && value <= TotalRow && value > 0)
-                    this._TableHeader = value;
-            }
-        }
+        //private int _TableHeader;
+        public int TableHeader { get; set; }
+        //{
+        //    get { return this._TableHeader; }
+        //    set
+        //    {
+        //        if (value <= TotalRow && value > 0)
+        //            this._TableHeader = value;
+        //    }
+        //}
 
-        public HashSet<string> UniqueList = new HashSet<string>();
+        public HashSet<string> UniqueList { get; set; }
         public int TotalRow;
         public int TotalCol;
 
@@ -48,28 +48,29 @@ namespace Excel_Export
 
         public Export(Microsoft.Office.Interop.Excel.Application application)
         {
-            FolderLocation = new KnownFolder(KnownFolderType.Downloads).Path;
-            Suffix = DateTime.Today.ToString("yyyy.MM.dd") + "_";
-            ColumnIndex = 1;
-            TableHeader = 2;
+            this.xlApp = application;
+            this.ws = xlApp.ActiveSheet as Worksheet;
 
-            xlApp = application;
-
-            //Read Active sheet
-            ws = xlApp.ActiveSheet as Worksheet;
+            this.FolderLocation = new KnownFolder(KnownFolderType.Downloads).Path.ToString();
+            this.Suffix = DateTime.Today.ToString("yyyy.MM.dd") + "_";
+            this.ColumnIndex = 1;
+            this.TableHeader = 2;
 
             ws.EnableAutoFilter = true;
 
-            TotalCol = ws.UsedRange.Columns.Count;
-            TotalRow = ws.UsedRange.Rows.Count;
+            this.TotalCol = ws.UsedRange.Columns.Count;
+            this.TotalRow = ws.UsedRange.Rows.Count;
+            this.array = ws.UsedRange.Value;
 
-            array = ws.UsedRange.Value;
+            this.UniqueList = new HashSet<string>();
 
             UpdateUniqueList();
+
         }
 
         public void UpdateUniqueList()
         {
+            UniqueList.Clear();
 
             for (int i = TableHeader; i < TotalRow; i++)
             {
@@ -94,7 +95,7 @@ namespace Excel_Export
                 //Copy funziona solo se xlApp è la medesima!!!
                 from.Copy(dest);
 
-                newbook.SaveAs(FolderLocation + "\\" + Suffix + item);
+                newbook.SaveAs(FolderLocation + "\\" + Suffix + item + ".xlsx");
                 newbook.Close();
             }
         }

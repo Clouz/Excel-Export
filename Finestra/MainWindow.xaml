@@ -30,14 +30,14 @@
         <TextBlock Grid.Column="0" Grid.ColumnSpan="1" Grid.Row="2" Text="Column Index:" TextAlignment="Left" VerticalAlignment="Center"/>
         <TextBlock Grid.Column="0" Grid.ColumnSpan="1" Grid.Row="3" Text="Table Header:" TextAlignment="Left" VerticalAlignment="Center"/>
 
-        <TextBox Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="0" Text="{Binding Path=FolderLocation}" TextAlignment="Left" VerticalAlignment="Center" Name="Cell" IsEnabled="False"/>
-        <TextBox Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="1" Text="{Binding Path=Suffix}" TextAlignment="Left" VerticalAlignment="Center" Name="From" Validation.Error="OnValidationError"/>
-        <TextBox Grid.Column="1" Grid.ColumnSpan="1" Grid.Row="2" Text="{Binding Path=ColumnIndex, ValidatesOnExceptions=True, NotifyOnValidationError=True}" TextAlignment="Left" VerticalAlignment="Center" Name="StartFrom" Validation.Error="OnValidationError"/>
-        <TextBox Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="3" Text="{Binding Path=TableHeader, ValidatesOnExceptions=True, NotifyOnValidationError=True}" TextAlignment="Left" VerticalAlignment="Center" Name="AssittionalString" Validation.Error="OnValidationError"/>
+        <TextBox Grid.ColumnSpan="4" Grid.Row="0" Text="{Binding Path=FolderLocation}" TextAlignment="Left" VerticalAlignment="Center" Name="Folder" IsEnabled="True" Margin="119,8,-1,9" Height="18"/>
+        <TextBox Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="1" Text="{Binding Path=Suffix}" TextAlignment="Left" VerticalAlignment="Center" Name="Suffix" Validation.Error="OnValidationError"/>
+        <TextBox Grid.Column="1" Grid.ColumnSpan="1" Grid.Row="2" Text="{Binding Path=ColumnIndex, ValidatesOnExceptions=True, NotifyOnValidationError=True}" TextAlignment="Left" VerticalAlignment="Center" Name="Index" Validation.Error="OnValidationError" TextChanged="Index_TextChanged"/>
+        <TextBox Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="3" Text="{Binding Path=TableHeader, ValidatesOnExceptions=True, NotifyOnValidationError=True}" TextAlignment="Left" VerticalAlignment="Center" Name="Header" Validation.Error="OnValidationError"/>
 
-        <Button Grid.ColumnSpan="4" Grid.Row="4" Name="Esegui" Click="Esegui_Click">Export</Button>
+        <Button Grid.ColumnSpan="4" Grid.Row="4" Name="Esegui" Click="Esegui_Click">Export to multiple files</Button>
 
-        <DataGrid Grid.Row="5" Grid.ColumnSpan="4" AutoGenerateColumns="False" Margin="0,10,0,0" Name="ListaPagine" IsReadOnly="True" >
+        <DataGrid Grid.Row="5" Grid.ColumnSpan="4" AutoGenerateColumns="False" Margin="0,10,0,0" Name="ListaItems" IsReadOnly="True" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Items" Binding="{Binding UniqueList}" Width="Auto"/>
             </DataGrid.Columns>

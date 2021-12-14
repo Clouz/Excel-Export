@@ -20,7 +20,7 @@ namespace Ribbon
         <tabs>
           <tab id='tab1' label='Export'>
             <group id='group1' label='Export'>
-              <button id='ExportToFiles' label='Export' onAction='OnButtonPressedExportToFiles'/>
+              <button id='ExportToFiles' label='Export to Files' onAction='OnButtonPressedExportToFiles'/>
             </group >
           </tab>
         </tabs>
@@ -32,10 +32,10 @@ namespace Ribbon
         {
             try
             {
-                Microsoft.Office.Interop.Excel.Application xlApp = (Microsoft.Office.Interop.Excel.Application)ExcelDnaUtil.Application;
-                Excel_Export.Export data = new Excel_Export.Export(xlApp);
+               
+                Excel_Export.Export data = new Excel_Export.Export((Microsoft.Office.Interop.Excel.Application)ExcelDnaUtil.Application);
 
-                MainWindow win = new MainWindow(data);
+                Finestra.MainWindow win = new Finestra.MainWindow(data);
                 win.ShowDialog();
             }
             catch (Exception e)

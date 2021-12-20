@@ -38,8 +38,8 @@ namespace Excel_Export
         //}
 
         public HashSet<string> UniqueList { get; set; }
-        public int TotalRow;
-        public int TotalCol;
+        public int TotalRow { get; set; }
+        public int TotalCol { get; set; }
 
         private Microsoft.Office.Interop.Excel.Application xlApp;
         private Microsoft.Office.Interop.Excel.Worksheet ws;
@@ -51,6 +51,9 @@ namespace Excel_Export
             this.xlApp = application;
             this.ws = xlApp.ActiveSheet as Worksheet;
 
+            this.TotalCol = ws.UsedRange.Columns.Count;
+            this.TotalRow = ws.UsedRange.Rows.Count;
+
             this.FolderLocation = new KnownFolder(KnownFolderType.Downloads).Path.ToString();
             this.Suffix = DateTime.Today.ToString("yyyy.MM.dd") + "_";
             this.ColumnIndex = 1;
@@ -58,8 +61,6 @@ namespace Excel_Export
 
             ws.EnableAutoFilter = true;
 
-            this.TotalCol = ws.UsedRange.Columns.Count;
-            this.TotalRow = ws.UsedRange.Rows.Count;
             this.array = ws.UsedRange.Value;
 
             this.UniqueList = new HashSet<string>();

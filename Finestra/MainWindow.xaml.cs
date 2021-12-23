@@ -24,24 +24,40 @@ namespace Finestra
     public partial class MainWindow : Window
     {
         Excel_Export.Export data;
+        bool ExportToFile;
         int _noOfErrorsOnScreen = 0;
 
-        public MainWindow(Excel_Export.Export data)
+        public MainWindow(Microsoft.Office.Interop.Excel.Application data, bool ExportToFile = true)
         {
-            this.data = data;
-            //MessageBox.Show("Col: " + this.data.TotalCol.ToString() + "\nRow:" + this.data.TotalRow.ToString());
-            //MessageBox.Show("Array Length: " + this.data.array.Length.ToString() + "\nIndex: " + this.data.ColumnIndex + "\nHeader: " + this.data.TableHeader);
+            this.ExportToFile = ExportToFile;
+            this.data = new Excel_Export.Export(data);
             this.data.UpdateUniqueList();
 
             InitializeComponent();
-            DataContext = this.data;
+            this.DataContext = this.data;
 
             ListaItems.ItemsSource = this.data.UniqueList;
+
+            if (this.ExportToFile == false)
+            {
+                Folder.Visibility = Visibility.Collapsed;
+                FolderText.Visibility = Visibility.Collapsed;
+                SuffixText.Text = "Sheet Suffix";
+            }
+
+
         }
 
         private void Esegui_Click(object sender, RoutedEventArgs e)
         {
-            data.ToNewFiles();
+            if (this.ExportToFile == false)
+            {
+                data.ToNewSheets();
+            }
+            else
+            {
+                data.ToNewFiles();
+            }
             this.Close();
         }
 
@@ -62,7 +78,13 @@ namespace Finestra
 
         private void Index_TextChanged(object sender, TextChangedEventArgs e)
         {
-            data.UpdateUniqueList();
+            
+        }
+
+        private void Update_Click(object sender, RoutedEventArgs e)
+        {
+            this.data.UpdateUniqueList();
+            ListaItems.Items.Refresh();
         }
     }
 }

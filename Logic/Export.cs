@@ -11,31 +11,31 @@ namespace Excel_Export
 {
     public class Export
     {
-        public string FolderLocation;
-        public string Suffix;
+        public string FolderLocation { get; set; }
+        public string Suffix { get; set; }
 
 
-        //private int _ColumnIndex;
-        public int ColumnIndex { get; set; }
-        //{
-        //    get { return this._ColumnIndex; }
-        //    set
-        //    {
-        //        if (value <= TotalCol && value > 0)
-        //            this._ColumnIndex = value;
-        //    }
-        //}
+        private int _ColumnIndex;
+        public int ColumnIndex
+        {
+            get { return this._ColumnIndex; }
+            set
+            {
+                if (value <= TotalCol && value > 0)
+                    this._ColumnIndex = value;
+            }
+        }
 
-        //private int _TableHeader;
-        public int TableHeader { get; set; }
-        //{
-        //    get { return this._TableHeader; }
-        //    set
-        //    {
-        //        if (value <= TotalRow && value > 0)
-        //            this._TableHeader = value;
-        //    }
-        //}
+        private int _TableHeader;
+        public int TableHeader
+        {
+            get { return this._TableHeader; }
+        set
+            {
+                if (value <= TotalRow && value > 0)
+                    this._TableHeader = value;
+            }
+        }
 
         public HashSet<string> UniqueList { get; set; }
         public int TotalRow { get; set; }
@@ -63,20 +63,32 @@ namespace Excel_Export
 
             this.array = ws.UsedRange.Value;
 
-            this.UniqueList = new HashSet<string>();
-
+            UniqueList = new HashSet<string>();
             UpdateUniqueList();
 
         }
 
         public void UpdateUniqueList()
         {
-            UniqueList.Clear();
-
-            for (int i = TableHeader; i < TotalRow; i++)
+            if (array != null)
             {
-                string part = array[i, ColumnIndex].ToString();
-                UniqueList.Add(part);
+                UniqueList.Clear();
+
+                for (int i = TableHeader; i <= TotalRow; i++)
+                {
+                    if (i <= array.Length)
+                    {
+                        var cell = array[i, ColumnIndex];
+                        if (cell != null)
+                        {
+                            string part = cell.ToString();
+                            if (part != "")
+                            {
+                                UniqueList.Add(part);
+                            }
+                        }
+                    } 
+                }
             }
         }
 
@@ -86,6 +98,12 @@ namespace Excel_Export
             {
                 Range range = ws.UsedRange;
                 range.AutoFilter(Field: ColumnIndex, Criteria1: item, VisibleDropDown: true);
+
+                while (xlApp.CalculationState != XlCalculationState.xlDone)
+                {
+                    Task.Delay(25);
+                }
+
                 Range from = ws.UsedRange;
 
                 Workbook newbook = xlApp.Workbooks.Add(XlWBATemplate.xlWBATWorksheet);
@@ -110,8 +128,27 @@ namespace Excel_Export
                 Range from = ws.UsedRange;
 
                 Worksheet newWorksheet = xlApp.Worksheets.Add(After: xlApp.ActiveSheet);
+
+                string sheetname = Suffix + item;
+
+                sheetname.Replace("\\","");
+                sheetname.Replace("/", "");
+                sheetname.Replace("*", "");
+                sheetname.Replace("?", "");
+                sheetname.Replace("[", "");
+                sheetname.Replace("]", "");
+
+                if (sheetname.Length > 31)
+                {
+                    sheetname = sheetname.Substring(0, 30);
+                } 
+
+                newWorksheet.Name = sheetname;
                 from.Copy(newWorksheet.UsedRange);
             }
+
+            ws.EnableAutoFilter = false;
+
         }
     }
 }

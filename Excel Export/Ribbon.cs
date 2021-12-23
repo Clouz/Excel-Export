@@ -21,6 +21,10 @@ namespace Ribbon
           <tab id='tab1' label='Export'>
             <group id='group1' label='Export'>
               <button id='ExportToFiles' label='Export to Files' onAction='OnButtonPressedExportToFiles'/>
+              <button id='ExportToSheets' label='Export to Sheets' onAction='OnButtonPressedExportToSheets'/>
+            </group >
+            <group id='group2' label='About'>
+              <button id='About' label='About' onAction='OnButtonPressedAbout'/>
             </group >
           </tab>
         </tabs>
@@ -32,18 +36,34 @@ namespace Ribbon
         {
             try
             {
-               
-                Excel_Export.Export data = new Excel_Export.Export((Microsoft.Office.Interop.Excel.Application)ExcelDnaUtil.Application);
-
-                Finestra.MainWindow win = new Finestra.MainWindow(data);
+                Finestra.MainWindow win = new Finestra.MainWindow((Microsoft.Office.Interop.Excel.Application)ExcelDnaUtil.Application);
                 win.ShowDialog();
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.ToString());
+                MessageBox.Show(e.ToString(), "Error");
             }
         }
-    }
+
+        public void OnButtonPressedExportToSheets(IRibbonControl control)
+        {
+            try
+            {
+                Finestra.MainWindow win = new Finestra.MainWindow((Microsoft.Office.Interop.Excel.Application)ExcelDnaUtil.Application, false);
+                win.ShowDialog();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString(), "Error");
+            }
+        }
+
+        public void OnButtonPressedAbout(IRibbonControl control)
+        {
+            MessageBox.Show("Version 0.1\nCopyright(C) 2021 by Claudio Mola\n\nMore information: https://github.com/Clouz/Excel-Export \n\nThis program is free software: you can redistribute it and / or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program. If not, see < http://www.gnu.org/licenses/>.\n\n", "About");
+        }
+
+     }
 }
 
 

@@ -14,6 +14,7 @@ namespace Excel_Export
         public string FolderLocation { get; set; }
         public string Suffix { get; set; }
 
+        public List<Result> results { get; set; }
 
         private int _ColumnIndex;
         public int ColumnIndex
@@ -94,6 +95,9 @@ namespace Excel_Export
 
         public void ToNewFiles()
         {
+
+            results = new List<Result>();
+
             foreach (var item in UniqueList)
             {
                 Range range = ws.UsedRange;
@@ -114,6 +118,9 @@ namespace Excel_Export
                 //Copy funziona solo se xlApp è la medesima!!!
                 from.Copy(dest);
 
+                Result r = new Result { PageName = item, RowCount = ws.AutoFilter.Range.Columns[ColumnIndex].SpecialCells(XlCellType.xlCellTypeVisible).Cells.Count - (TableHeader - 1)};
+                results.Add(r);
+
                 newbook.SaveAs(FolderLocation + "\\" + Suffix + item + ".xlsx");
                 newbook.Close();
             }
@@ -121,6 +128,9 @@ namespace Excel_Export
 
         public void ToNewSheets()
         {
+
+            results = new List<Result>();
+
             foreach (var item in UniqueList)
             {
                 Range range = ws.UsedRange;
@@ -145,10 +155,39 @@ namespace Excel_Export
 
                 newWorksheet.Name = sheetname;
                 from.Copy(newWorksheet.UsedRange);
+
+                Result r = new Result { PageName = item, RowCount = ws.AutoFilter.Range.Columns[ColumnIndex].SpecialCells(XlCellType.xlCellTypeVisible).Cells.Count - (TableHeader - 1) };
+                results.Add(r);
+
             }
 
             ws.EnableAutoFilter = false;
 
         }
+
+        public bool CheckIntegrity()
+        {
+            int t = 0;
+            int tPages = TotalRow - (TableHeader - 1);
+
+            foreach (var item in results)
+            {
+                t = t + item.RowCount;
+            }
+
+            if (t == tPages)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+    }
+
+    public class Result
+    {
+        public string PageName;
+        public int RowCount;
     }
 }

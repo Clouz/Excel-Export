@@ -58,6 +58,30 @@ namespace Finestra
             {
                 data.ToNewFiles();
             }
+
+            string s = "";
+
+            bool b = data.CheckIntegrity();
+
+            if (b)
+            {
+                s = s + "The sum of the rows and the sum of the rows in new sheets are different";
+            }
+            else
+            {
+                s = s + "The sum of the rows and the sum of the rows in new sheets are the same";
+            }
+
+            foreach (var item in data.results)
+            {
+                s = s + item.PageName + "\t" + item.RowCount + ";\n";
+            }
+
+            s = s + "TOTAL ROWS: " + (data.TotalRow - (data.TableHeader - 1));
+
+
+            MessageBox.Show(s, "Result", MessageBoxButton.OK, b ? MessageBoxImage.Information: MessageBoxImage.Error);
+
             this.Close();
         }
 
